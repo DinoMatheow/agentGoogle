@@ -1,0 +1,14 @@
+services:
+  postgress:
+    image: postgres:17
+    container_name: agent-assistant-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: agent-assistant
+    ports:
+      - "5433:5432"
+    volumes:
+      - agentAssints-data:/var/lib/postgresql/data
+  volumes:
+      agentAssints-data:

@@ -9,6 +9,6 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - agentAssints-data:/var/lib/postgresql/data
+      - agent-assistant-data:/var/lib/postgresql/data
   volumes:
-      agentAssints-data:
+      agent-assistant-data:

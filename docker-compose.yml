@@ -1,5 +1,6 @@
+
 services:
-  postgress:
+  postgres:
     image: postgres:17
     container_name: agent-assistant-db
     environment:
@@ -10,5 +11,6 @@ services:
       - "5433:5432"
     volumes:
       - agent-assistant-data:/var/lib/postgresql/data
-  volumes:
-      agent-assistant-data:
+
+volumes:
+  agent-assistant-data:

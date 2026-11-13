@@ -11,7 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 
-@Component
+// @Component
 @RequiredArgsConstructor
 public class TestLlmCall  implements CommandLineRunner {
 

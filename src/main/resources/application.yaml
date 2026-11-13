@@ -13,7 +13,7 @@ spring:
           options:
             model: gemini-3.1-flash-lite
   datasource:
-    url: jdbc:postgresql://localhost:5432/agent-assistant
+    url: jdbc:postgresql://localhost:5433/agent-assistant
     username: postgres
     password: root
   jpa:

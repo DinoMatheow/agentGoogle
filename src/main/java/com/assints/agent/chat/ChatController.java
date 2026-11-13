@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,5 +27,12 @@ public class ChatController {
         
         return chatClient.prompt(prompt).call().content();
     }
+
+    @PostMapping(value = "/stream", produces = "text/event-stream; charset=UTF-8")
+    public Flux<String> chatStream(@RequestBody String prompt) {
+        
+        return chatClient.prompt(prompt).stream().content();
+    }
+    
     
 }

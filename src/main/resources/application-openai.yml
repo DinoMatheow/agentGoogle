@@ -1,12 +1,6 @@
 
 spring:
-  autoconfigure:
-      exclude:
-      - org.springframework.ai.model.google.genai.autoconfigure.chat.GoogleGenAiChatAutoConfiguration
   ai:
-    model:
-      chat: openai
-
     openai:
       api-key: ${OPENAI_API_KEY}
       chat:

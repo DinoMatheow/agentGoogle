@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+// @Component
 @RequiredArgsConstructor 
 public class TestChatClient implements CommandLineRunner {
     private final ChatClient chatClient;

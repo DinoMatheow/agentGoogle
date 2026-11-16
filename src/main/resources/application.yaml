@@ -1,17 +1,10 @@
 spring:
-  config:
-    import: optional:file:./.env[.properties]
-
   application:
     name: agent
-
-  ai:
-    google:
-      genai:
-        api-key: ${GOOGLE_AI_API_KEY}
-        chat:
-          options:
-            model: gemini-3.1-flash-lite
+    ai:
+        model:
+          chat: google-genai
+          
   datasource:
     url: jdbc:postgresql://localhost:5432/agent-assistant
     username: postgres

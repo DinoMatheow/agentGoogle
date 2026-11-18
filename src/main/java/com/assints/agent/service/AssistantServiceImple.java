@@ -29,7 +29,7 @@ public class AssistantServiceImple implements AssistantService{
     }
 
     @Override
-    public Flux<String> chatStreamo(String prompt, String model) {
+    public Flux<String> chatStream(String prompt, String model) {
 
         return resolveClient(model).prompt(prompt).stream().content();
     }

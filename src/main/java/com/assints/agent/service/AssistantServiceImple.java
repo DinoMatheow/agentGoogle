@@ -1,8 +1,14 @@
 package com.assints.agent.service;
 
+import java.util.Map;
+
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -14,6 +20,9 @@ public class AssistantServiceImple implements AssistantService{
 
     private  final ChatClient geminiClient;
     private  final ChatClient openAiClient;
+
+    @Value("classpath:prompts/explain-condition.st")
+    private Resource explainConditionPrompt; 
 
     public AssistantServiceImple(
     @Qualifier("geminiClient") ChatClient geminiClient,
@@ -47,10 +56,11 @@ public class AssistantServiceImple implements AssistantService{
     public String explainCondition(String condition, String model) {
         log.info("Explain request - condition: {}, modelo:{}", condition, model);
         
+        PromptTemplate template = new PromptTemplate(explainConditionPrompt);
+        String message = template.render(Map.of("condition", condition));
+        
         return resolveClient(model)
-                .prompt()
-                .user(u -> u.text("Explain to me what it is {condicion} in simple terms for a patient")
-                            .param("condition",condition))
+                .prompt(message)
                 .call()
                 .content();
     }

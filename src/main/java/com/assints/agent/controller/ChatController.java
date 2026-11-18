@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.assints.agent.dto.ChatRequest;
 import com.assints.agent.service.AssistantService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 
@@ -36,6 +37,12 @@ public class ChatController {
     public Flux<String> chatStream(@RequestBody ChatRequest request ) {
         
         return assistantService.chatStream(request.prompt(), request.model());
+    }
+
+    @PostMapping("/explain")
+    private ResponseEntity<String> explainCondition(@Valid @RequestBody ChatRequest request){
+
+        return  ResponseEntity.ok(assistantService.explainCondition(request.prompt(), request.model()));        
     }
     
 

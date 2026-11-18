@@ -25,11 +25,14 @@ public class AssistantServiceImple implements AssistantService{
 
     @Override
     public String chat(String prompt, String model) {
+        log.info("Chat request - model: {}", model);
+
         return resolveClient(model).prompt(prompt).call().content();
     }
 
     @Override
     public Flux<String> chatStream(String prompt, String model) {
+        log.info("ChatStream request - model: {}", model);
 
         return resolveClient(model).prompt(prompt).stream().content();
     }
@@ -38,6 +41,18 @@ public class AssistantServiceImple implements AssistantService{
            return "gemini".equalsIgnoreCase(model)
             ? geminiClient
             : openAiClient;
+    }
+
+    @Override
+    public String explainCondition(String condition, String model) {
+        log.info("Explain request - condition: {}, modelo:{}", condition, model);
+        
+        return resolveClient(model)
+                .prompt()
+                .user(u -> u.text("Explain to me what it is {condicion} in simple terms for a patient")
+                            .param("condition",condition))
+                .call()
+                .content();
     }
 
 

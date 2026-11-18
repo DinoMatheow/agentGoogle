@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.assints.agent.dto.ChatRequest;
 import com.assints.agent.service.AssistantService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,15 +27,15 @@ public class ChatController {
     
 
     @PostMapping
-    public ResponseEntity<String> Chat(@RequestBody String prompt, @RequestParam(defaultValue = "gemini") String model ) {
+    public ResponseEntity<String> Chat(@RequestBody ChatRequest request) {
         
-        return ResponseEntity.ok(assistantService.chat(prompt, model));
+        return ResponseEntity.ok(assistantService.chat(request.prompt(), request.model()));
     }
 
     @PostMapping(value = "/stream", produces = "text/event-stream; charset=UTF-8")
-    public Flux<String> chatStream(@RequestBody String prompt, @RequestParam(defaultValue = "gemini")String model ) {
+    public Flux<String> chatStream(@RequestBody ChatRequest request ) {
         
-        return assistantService.chatStream(prompt, model);
+        return assistantService.chatStream(request.prompt(), request.model());
     }
     
 

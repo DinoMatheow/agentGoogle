@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
@@ -23,6 +23,19 @@ public class AssistantServiceImple implements AssistantService{
 
     @Value("classpath:prompts/explain-condition.st")
     private Resource explainConditionPrompt; 
+    @Value("classpath:prompts/symptomp-analysis.st")
+    private Resource symtomAnalysisPrompt; 
+
+    private PromptTemplate explainConditionTemplate;
+    private PromptTemplate symtomAnalysisTemplate;
+
+    @PostConstruct
+    void init(){
+        symtomAnalysisTemplate = new PromptTemplate(symtomAnalysisPrompt);
+        explainConditionTemplate = new PromptTemplate(explainConditionPrompt);
+    }
+
+    
 
     public AssistantServiceImple(
     @Qualifier("geminiClient") ChatClient geminiClient,
@@ -56,8 +69,19 @@ public class AssistantServiceImple implements AssistantService{
     public String explainCondition(String condition, String model) {
         log.info("Explain request - condition: {}, modelo:{}", condition, model);
         
-        PromptTemplate template = new PromptTemplate(explainConditionPrompt);
-        String message = template.render(Map.of("condition", condition));
+        String message = explainConditionTemplate.render(Map.of("condition", condition));
+        
+        return resolveClient(model)
+                .prompt(message)
+                .call()
+                .content();
+    }
+
+    @Override
+    public String analyzeSymptoms(String simptoms, String model) {
+        log.info("Analyze of simptoms - simptoms: {}, modelo:{}", simptoms , model);
+        
+        String message = symtomAnalysisTemplate.render(Map.of("simptoms", simptoms));
         
         return resolveClient(model)
                 .prompt(message)

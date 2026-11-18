@@ -23,7 +23,7 @@ public class AssistantServiceImple implements AssistantService{
 
     @Value("classpath:prompts/explain-condition.st")
     private Resource explainConditionPrompt; 
-    @Value("classpath:prompts/symptomp-analysis.st")
+    @Value("classpath:prompts/symptom-analysis.st")
     private Resource symtomAnalysisPrompt; 
 
     private PromptTemplate explainConditionTemplate;
@@ -78,10 +78,10 @@ public class AssistantServiceImple implements AssistantService{
     }
 
     @Override
-    public String analyzeSymptoms(String simptoms, String model) {
-        log.info("Analyze of simptoms - simptoms: {}, modelo:{}", simptoms , model);
+    public String analyzeSymptoms(String symptoms, String model) {
+        log.info("Analyze of symptoms - symptoms: {}, modelo:{}", symptoms , model);
         
-        String message = symtomAnalysisTemplate.render(Map.of("simptoms", simptoms));
+        String message = symtomAnalysisTemplate.render(Map.of("symptoms", symptoms));
         
         return resolveClient(model)
                 .prompt(message)

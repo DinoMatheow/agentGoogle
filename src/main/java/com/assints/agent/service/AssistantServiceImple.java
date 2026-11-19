@@ -21,18 +21,22 @@ public class AssistantServiceImple implements AssistantService{
     private  final ChatClient geminiClient;
     private  final ChatClient openAiClient;
 
-    @Value("classpath:prompts/explain-condition.st")
-    private Resource explainConditionPrompt; 
-    @Value("classpath:prompts/symptom-analysis.st")
-    private Resource symtomAnalysisPrompt; 
+    @Value("classpath:prompts/route-assistant.st")
+    private Resource consultRoutePrompt; 
+    @Value("classpath:prompts/explain-incident.st")
+    private Resource explainIncidentPrompt;
+    @Value("classpath:prompts/analyze-incident.st")
+    private Resource generateIncidentReportPrompt;  
 
-    private PromptTemplate explainConditionTemplate;
-    private PromptTemplate symtomAnalysisTemplate;
+    private PromptTemplate consultRouteTemplate;
+    private PromptTemplate explainIncidentTemplate;
+    private PromptTemplate generateIncidentReportTemplate;
 
     @PostConstruct
     void init(){
-        symtomAnalysisTemplate = new PromptTemplate(symtomAnalysisPrompt);
-        explainConditionTemplate = new PromptTemplate(explainConditionPrompt);
+        consultRouteTemplate = new PromptTemplate(consultRoutePrompt);
+        explainIncidentTemplate = new PromptTemplate(explainIncidentPrompt);
+        generateIncidentReportTemplate = new PromptTemplate(generateIncidentReportPrompt);
     }
 
     
@@ -66,10 +70,10 @@ public class AssistantServiceImple implements AssistantService{
     }
 
     @Override
-    public String explainCondition(String condition, String model) {
-        log.info("Explain request - condition: {}, modelo:{}", condition, model);
+    public String consultRoute(String origin, String destination, String model) {
+        log.info("Consult request - origin: {}, destination:{}, modelo:{}", origin, destination, model);
         
-        String message = explainConditionTemplate.render(Map.of("condition", condition));
+        String message = consultRouteTemplate.render(Map.of("origin",origin,  "destination", destination));
         
         return resolveClient(model)
                 .prompt(message)
@@ -78,10 +82,24 @@ public class AssistantServiceImple implements AssistantService{
     }
 
     @Override
-    public String analyzeSymptoms(String symptoms, String model) {
-        log.info("Analyze of symptoms - symptoms: {}, modelo:{}", symptoms , model);
+    public String explainIncident(String incident, String model) {
+        log.info("Explain  Incident - incident: {}, modelo:{}", incident , model);
         
-        String message = symtomAnalysisTemplate.render(Map.of("symptoms", symptoms));
+        String message = explainIncidentTemplate.render(Map.of("incident", incident));
+        
+        return resolveClient(model)
+                .prompt(message)
+                .call()
+                .content();
+    }
+
+
+
+    @Override
+    public String generateIncidentReport(String incident, String model) {
+        log.info("Analyze  Incident - incident: {}, modelo:{}", incident , model);
+        
+        String message = generateIncidentReportTemplate.render(Map.of("incident", incident));
         
         return resolveClient(model)
                 .prompt(message)

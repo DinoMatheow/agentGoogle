@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assints.agent.dto.ChatRequest;
+import com.assints.agent.dto.RouteRequest;
 import com.assints.agent.service.AssistantService;
 
 import jakarta.validation.Valid;
@@ -39,17 +40,24 @@ public class ChatController {
         return assistantService.chatStream(request.prompt(), request.model());
     }
 
-    @PostMapping("/explain")
-    private ResponseEntity<String> explainCondition(@Valid @RequestBody ChatRequest request){
+    @PostMapping("/consult-route")
+    private ResponseEntity<String> consultRoute(@Valid @RequestBody RouteRequest request){
 
-        return  ResponseEntity.ok(assistantService.explainCondition(request.prompt(), request.model()));        
+        return  ResponseEntity.ok(assistantService.consultRoute(request.origin(), request.destination(), request.model()));        
     }
 
-     @PostMapping("/analyze")
-    private ResponseEntity<String> analyzeSymptoms(@Valid @RequestBody ChatRequest request){
+     @PostMapping("/explainIncident")
+    private ResponseEntity<String> explainIncident(@Valid @RequestBody ChatRequest request){
 
-        return  ResponseEntity.ok(assistantService.analyzeSymptoms(request.prompt(), request.model()));        
+        return  ResponseEntity.ok(assistantService.explainIncident(request.prompt(), request.model()));        
     }
+
+    @PostMapping("/incidentReport")
+    private ResponseEntity<String> analyzeIncident(@Valid @RequestBody ChatRequest request){
+
+        return  ResponseEntity.ok(assistantService.generateIncidentReport(request.prompt(), request.model()));        
+    }
+    
 
    
     

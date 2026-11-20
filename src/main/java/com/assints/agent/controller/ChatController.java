@@ -57,6 +57,12 @@ public class ChatController {
 
         return  ResponseEntity.ok(assistantService.generateIncidentReport(request.prompt(), request.model()));        
     }
+
+     @PostMapping("/consultation")
+    private ResponseEntity<String> consult(@Valid @RequestBody ChatRequest request){
+
+        return  ResponseEntity.ok(assistantService.consultation(request.prompt(), request.model()));        
+    }
     
 
    

@@ -11,6 +11,7 @@ public interface AssistantService {
     String consultRoute(String origin, String destination, String model);
     String explainIncident(String incident, String model);
     String generateIncidentReport(String incident, String model);
+    String consultation(String incident, String model);
 
      
 }
